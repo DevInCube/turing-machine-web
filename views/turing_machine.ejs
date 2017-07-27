@@ -1,0 +1,444 @@
+<html><head>
+    <title>Машина Тюринга</title> 
+ 
+    <% include partials/head %>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script> 
+ 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/uk.js"></script> 
+ 
+	<link rel='stylesheet' 
+		href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css' >
+	<link rel="stylesheet" href="/stylesheets/post.css">
+	<script type='application/javascript' 
+		src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js'></script> 
+ 
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/cpp.min.js'></script> 
+ 
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script> 
+ 
+	<style>
+		
+		.mom { color: gray; }
+		.sep::before { content: "•"; padding: 5px; }
+		.noaccess-logo {
+			width: 128px;
+			margin-bottom: 20px;
+		}
+	</style> 
+ 
+</head> 
+ 
+  <body><div id="MathJax_Message" style="display: none;"></div> 
+ 
+    <div>
+	
+
+		
+		<div class="container">
+
+			
+
+			
+
+			<div id="post-header" class="page-header">
+
+				<h1>Машина Тюринга</h1> 
+ 
+				
+
+			</div> 
+ 
+			
+			<div class="row">
+				<div class="col-md-8 wrap">
+					<div id="post-body"><p><img src="http://www.worldofcomputing.net/wp-content/uploads/2013/01/turingMachine.gif" alt=""></p> 
+ 
+<p><strong>Машина Тюринга</strong> 
+  - це математична абстракція, введена для формального уточнення поняття алгоритму. Названа на честь англійського математика Алана Тюрінга, який запропонував це поняття у 1936 році.</p> 
+ 
+<h2>Склад машини Тюринга</h2> 
+ 
+<p>У кожної машини Тюрінга є <strong>стрічка</strong> 
+ , потенційно нескінченна в обидві сторони. Стрічка складається із дискретних <strong>комірок</strong> 
+ .<br>
+Є скінченна множина символів стрічки <span id="MathJax-Element-1-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mn>0</mn> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-1" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-2" class="mjx-mrow"><span id="MJXc-Node-3" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-4" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-5" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.363em; padding-bottom: 0.363em;">0</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ 
+ </span> 
+ <script type="math/tex" id="MathJax-Element-1">S_0</script> 
+ , <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-2-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mn>1</mn> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-6" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-7" class="mjx-mrow"><span id="MJXc-Node-8" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-9" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-10" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.363em; padding-bottom: 0.363em;">1</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-2">S_1</script> 
+  …, <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-3-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>n</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-11" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-12" class="mjx-mrow"><span id="MJXc-Node-13" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-14" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-15" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.311em;">n</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-3">S_n</script> 
+ , що називається <strong>алфавітом машини</strong> 
+ . Кожна комірка стрічки може бути зайнята не більш ніж одним символом.<br>
+Машина має деяку скінченну множину нутрішніх <strong>встанів</strong> 
+  <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-4-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>q</mi> 
+ <mn>0</mn> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-16" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-17" class="mjx-mrow"><span id="MJXc-Node-18" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.014em;"><span id="MJXc-Node-19" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-20" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.363em; padding-bottom: 0.363em;">0</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ 
+ </span> 
+ <script type="math/tex" id="MathJax-Element-4">q_0</script> 
+ , <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-5-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>q</mi> 
+ <mn>1</mn> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-21" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-22" class="mjx-mrow"><span id="MJXc-Node-23" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.014em;"><span id="MJXc-Node-24" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-25" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.363em; padding-bottom: 0.363em;">1</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ 
+ </span> 
+ <script type="math/tex" id="MathJax-Element-5">q_1</script> 
+ , …, <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-6-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>q</mi> 
+ <mi>n</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-26" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-27" class="mjx-mrow"><span id="MJXc-Node-28" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.014em;"><span id="MJXc-Node-29" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-30" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.311em;">n</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-6">q_n</script> 
+ . У кожен момент часу машина знаходиться лише в одному із цих станів.<br>
+Нарешті, є <strong>голівка (каретка)</strong> 
+ , яка у кожен момент часу знаходиться на одній із комірок стрічки.</p> 
+ 
+<h2>Принцип роботи</h2> 
+ 
+<p>Машина працює не безперервно, а покроково у дискретні моменти часу.<br>
+Якщо у якийсь момент <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-7-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>t</mi> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-31" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-32" class="mjx-mrow"><span id="MJXc-Node-33" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.311em;">t</span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-7">t</script> 
+  голівка знаходиться на комірці, що містить символ <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-8-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>i</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-34" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-35" class="mjx-mrow"><span id="MJXc-Node-36" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-37" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-38" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.311em;">i</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-8">S_i</script> 
+ , і машина знаходиться у внутрішньому стані <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-9-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>q</mi> 
+ <mi>j</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-39" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-40" class="mjx-mrow"><span id="MJXc-Node-41" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.014em;"><span id="MJXc-Node-42" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-43" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.466em;">j</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-9">q_j</script> 
+ , то вона може виконати одну з чотирьох доступних дій:</p> 
+ 
+<ul>
+<li>голівка затирає символ <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-10-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>i</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-44" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-45" class="mjx-mrow"><span id="MJXc-Node-46" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-47" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-48" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.311em;">i</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-10">S_i</script> 
+ , і записує у тій же комірці новий символ <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-11-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>k</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-49" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-50" class="mjx-mrow"><span id="MJXc-Node-51" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-52" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.219em; padding-right: 0.071em;"><span id="MJXc-Node-53" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em;">k</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-11">S_k</script> 
+ </li> 
+ 
+<li>голівка пересувається в сусідню ліву комірку стрічки</li> 
+ 
+<li>голівка пересувається в сусідню праву комірку</li> 
+ 
+<li>машина зупиняє виконання своєї роботи</li> 
+ 
+</ul> 
+ 
+<h2>Створення машини Тюринга</h2> 
+ 
+<p>Для створення (задання) машини необхідно описати алгоритм у вигляді <strong>таблиці переходів</strong> 
+ , які вона виконуватиме, записати на стрічку <strong>вхідне слово</strong> 
+  (кожен символ у окремій комірці) та запустити її виконання. Через певну скінченну кількість кроків машина зупиниться (якщо алгоритм заданий коректно і не зациклюється), а результатом роботи машини буде <strong>вихідне слово</strong> 
+  (набір символів), що записане на стрічці у момент зупинки.</p> 
+ 
+<p>Таблиця переходів визначає набір <strong>правил переходів</strong> 
+  машини. Правило переходу описує, з якого внутрішнього стану <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-12-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>q</mi> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-54" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-55" class="mjx-mrow"><span id="MJXc-Node-56" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-12">q</script> 
+  та з яким символом <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-13-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>i</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-57" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-58" class="mjx-mrow"><span id="MJXc-Node-59" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-60" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-61" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.311em;">i</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-13">S_i</script> 
+  у комірці під головкою потрібно виконати перехід.
+Пара <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-14-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>q</mi> 
+ <mo>&amp;#x00D7;</mo> 
+ <msub><mi>S</mi> 
+ <mi>i</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-62" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-63" class="mjx-mrow"><span id="MJXc-Node-64" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em; padding-right: 0.014em;">q</span> 
+ </span> 
+ <span id="MJXc-Node-65" class="mjx-mo MJXc-space2"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.208em; padding-bottom: 0.311em;">×</span> 
+ </span> 
+ <span id="MJXc-Node-66" class="mjx-msubsup MJXc-space2"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-67" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.212em; padding-right: 0.071em;"><span id="MJXc-Node-68" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.414em; padding-bottom: 0.311em;">i</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ 
+ </span> 
+ <script type="math/tex" id="MathJax-Element-14">q \times S_i</script> 
+  називається <strong>конфігурацією</strong> 
+  або <strong>умовою</strong> 
+  переходу. При виконанні переходу машина може виконати дії, що описуються як <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-15-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>k</mi> 
+ </msub> 
+ <mo>&amp;#x00D7;</mo> 
+ <mi>M</mi> 
+ <mo>&amp;#x00D7;</mo> 
+ <mi>p</mi> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-69" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-70" class="mjx-mrow"><span id="MJXc-Node-71" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-72" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.219em; padding-right: 0.071em;"><span id="MJXc-Node-73" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em;">k</span> 
+ </span> 
+ </span> 
+ </span> 
+ <span id="MJXc-Node-74" class="mjx-mo MJXc-space2"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.208em; padding-bottom: 0.311em;">×</span> 
+ </span> 
+ <span id="MJXc-Node-75" class="mjx-mi MJXc-space2"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.26em; padding-right: 0.081em;">M</span> 
+ </span> 
+ <span id="MJXc-Node-76" class="mjx-mo MJXc-space2"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.208em; padding-bottom: 0.311em;">×</span> 
+ </span> 
+ <span id="MJXc-Node-77" class="mjx-mi MJXc-space2"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em;">p</span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-15">S_k \times M \times p</script> 
+ , де <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-16-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><msub><mi>S</mi> 
+ <mi>k</mi> 
+ </msub> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-78" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-79" class="mjx-mrow"><span id="MJXc-Node-80" class="mjx-msubsup"><span class="mjx-base" style="margin-right: -0.032em;"><span id="MJXc-Node-81" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em; padding-right: 0.032em;">S</span> 
+ </span> 
+ </span> 
+ <span class="mjx-sub" style="font-size: 70.7%; vertical-align: -0.219em; padding-right: 0.071em;"><span id="MJXc-Node-82" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.311em;">k</span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-16">S_k</script> 
+  задає символ, який потрібно записати замість символа під кареткою, <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-17-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>M</mi> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-83" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-84" class="mjx-mrow"><span id="MJXc-Node-85" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.466em; padding-bottom: 0.26em; padding-right: 0.081em;">M</span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-17">M</script> 
+  задає напрямок одиничного зсуву каретки на стрічці, а <span class="MathJax_Preview" style="color: inherit; display: none;"></span> 
+ <span id="MathJax-Element-18-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>p</mi> 
+ </math> 
+ " role="presentation" style="font-size: 108%; position: relative;"><span id="MJXc-Node-86" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-87" class="mjx-mrow"><span id="MJXc-Node-88" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.208em; padding-bottom: 0.466em;">p</span> 
+ </span> 
+ </span> 
+ </span> 
+
+ </span> 
+ <script type="math/tex" id="MathJax-Element-18">p</script> 
+  - це новий внутрішній стан, у який переходить машина після завершення поточного кроку.</p> 
+ 
+<p>У початковий момент часу машина знаходиться у <strong>початковому стані</strong> 
+  (цей стан виділяється із множини можливих станів), а каретка вказує на перший символ вхідного слова. Після цього виконується перший крок, на якому шукається підходяща конфігурація у таблиці переходів та виконується перехід. Так кроки виконуються поки машина не перейде у один із визначених <strong>кінцевих станів</strong> 
+  - тоді машина коректно завершує свою роботу. Якщо ж на певному кроці серед всіх переходів не знайдено такого, що задовольняє поточну конфігурацію машини - то вона зупиняє свою роботу, але це означає, що машина завершилася з помилкою. Також можливе зациклення машини, коли вона буде вічно виконувати дії, та ніколи не зупинеться.</p> 
+ 
+</div> 
+ 
+				</div> 
+ 
+				<div class="col-md-4">
+					<!-- toc <div id="toc"></div> 
+ -->
+				</div> 
+ 
+			</div> 
+ 
+
+			<hr/>
+
+		</div> 
+ 
+
+	</div> 
+ 	
+
+	<script>
+	$( document ).ready(function() {
+		moment.locale("uk");
+		$('[data-toggle="tooltip"]').tooltip();
+		update();
+		setInterval(update, 3000);
+	});
+	
+	function update() {
+		var moments = $('.mom');
+		$.each(moments, function(i, val) {
+			var obj = $(val);
+			var d = new Date(obj.attr('data-date'))
+			var date = moment(d);
+			obj.html(date.fromNow());
+		});
+	}
+	</script> 
+ 
+  
+
+</body> 
+ </html> 
+ 

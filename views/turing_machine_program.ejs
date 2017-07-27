@@ -1,0 +1,168 @@
+<html><head>
+    <title>Мова переходів для Машини Тюринга</title>
+
+    <% include partials/head %>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/uk.js"></script>
+	<link rel='stylesheet' 
+		href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css' >
+	<link rel="stylesheet" href="/stylesheets/post.css">
+	<script type='application/javascript' 
+		src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/cpp.min.js'></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script>
+	<style>
+		
+		.mom { color: gray; }
+		.sep::before { content: "•"; padding: 5px; }
+		.noaccess-logo {
+			width: 128px;
+			margin-bottom: 20px;
+		}
+	</style></head>
+  <body><div id="MathJax_Message" style="display: none;"></div>
+    <div>
+	
+
+		
+		<div class="container">
+
+			
+
+			
+
+			<div id="post-header" class="page-header">
+
+				<h1>Мова переходів для Машини Тюринга</h1>
+				
+
+			</div>
+			
+			<div class="row">
+				<div class="col-md-8 wrap">
+					<div id="post-body">
+<h2>Визначення</h2>
+<p><strong>Програма</strong> для машини Тюринга складається із набору <strong>правил переходів</strong>.</p>
+<p>Кожне правило переходу складається з <strong>умови</strong> та <strong>команди</strong> переходу.</p>
+<p><strong>Умова переходу</strong> визначає який поточний стан та який символ на каретці задовольняють умову для виконання команди даного переходу.</p>
+<p><strong>Команда переходу</strong> визначає 3 дії, які може виконувати машина Тюринга:</p>
+<ul>
+<li>Який символ записати у комірку під катеркою</li>
+<li>У яку сторону зсунути карету (вправо-вліво на 1 позицію)</li>
+<li>У який стан переходить машина після виконання перших двох дій</li>
+</ul>
+<p><strong>Початковий стан</strong> машини буде поточним станом першого переходу програми.</p>
+<p><strong>Кінцевий стан</strong> почначається символом знаку оклику<code>!</code>.</p>
+<h2>Лексеми</h2>
+<p>Регістр символів у програмі важливий.</p>
+<p><strong>Назва стану</strong> машини може містити будь-які друковані символи Unicode окрім пробільних та символу коми <code>,</code>. Наприклад, <code>q1</code>, <code>q'</code>, <code>1</code>, <code>state_1</code>, <code>стан-1</code>.</p>
+<p><strong>Символ</strong> у комірці стрічки може бути будь-яким друкованим символом Unicode окрім коми <code>,</code>.</p>
+<p><strong>Напрямок руху каретки</strong> при виконанні машиною команди кодується одним із трьох символів:</p>
+<ul>
+<li><code>L</code> - рух вліво</li>
+<li><code>N</code> - не виконувати рух</li>
+<li><code>R</code> - рух вправо</li>
+</ul>
+<h2>Синтаксис</h2>
+<p><strong>Програма</strong> задається як послідовність переходів. Кожен перехід починається з нового рядка, пусті рядки ігноруються.</p>
+<pre><code class="hljs">перехід1
+перехід2
+
+перехід3
+перехідN
+</code></pre>
+<p><strong>Перехід</strong> складається із умови та команди, що розділені символами <code>-&gt;</code>:</p>
+<pre><code class="hljs">умова-&gt;команда
+</code></pre>
+<p>Перехід завжди починається з нового рядка і не містить символів перед умовою чи після команди.</p>
+<p><strong>Умова переходу</strong> складається з назви поточного стану та поточного символу, що розділені комою <code>,</code>: <code>q1,g</code>, <code>stateN,#</code>, <code>1,_</code>.</p>
+<p><strong>Команда переходу</strong> складається із нового символа, напрямку руху каретки та нового стану, що розділені комами: <code>f,R,state2</code>, <code>*,N,q2</code>, <code>_,R,1</code>.</p>
+<p>При цьому кожну із частин команди можна упускати - це означатиме, що відповідна дія не виконуватиметься:</p>
+<ul>
+<li><code>,R,q1</code> - символ під кареткою залишається незмінним</li>
+<li><code>f,,q1</code> - каретка не рухається (аналогічно <code>f,N,q1</code>)</li>
+<li><code>f,R,</code> - стан машини не змінюватиметься</li>
+</ul>
+<p>Тоді повний перехід позначатиметься так:</p>
+<pre><code class="hljs php">q1,a-&gt;b,R,q2
+</code></pre>
+<p>А програма виглядатиме так:</p>
+<pre><code class="hljs php">q0,h-&gt;H,R,q0
+q0,e-&gt;E,R,q0
+q0,l-&gt;L,R,q0
+q0,o-&gt;O,R,q0
+q0,.-&gt;!,R,q1
+q1, -&gt; ,L,!
+</code></pre>
+<h2>Можливі помилки парсингу програми</h2>
+<h3>Синтаксичні помилки</h3>
+<ol>
+<li><em>Текст програми пустий</em> - не можна запрограмувати машину без переходів</li>
+<li><em>Недозволений символ у назві поточного стану</em>: <code>q 1,a-&gt;b,R,q2</code></li>
+<li><em>Стан не задано</em>: <code>,a-&gt;b,,</code></li>
+<li><em>Недозволений поточний символ</em>: <code>q,,-&gt;b,,</code></li>
+<li><em>Поточний символ не задано</em>: <code>q,-&gt;b,,</code></li>
+<li><em>Поточний символ складається з багатьох символів</em>: <code>q,xx-&gt;b,,</code></li>
+<li><em>Очікується символ <code>&gt;</code> після символу <code>-</code></em>: <code>q,a-b,,</code></li>
+<li><em>Недозволений символ заміни</em>: <code>q,a-&gt;,,R,q2</code></li>
+<li><em>Символ заміни складається з багатьох символів</em>: <code>q,a-&gt;xx,,</code></li>
+<li><em>Задано невірний напрямок руху каретки</em>: <code>q,a-&gt;b,T,q2</code></li>
+<li><em>Недозволений символ у назві нового стану</em>:  <code>q1,a-&gt;b,R,new state</code></li>
+<li><em>Неповний перехід</em>: <code>q1,</code>, <code>q1,x</code>, <code>q1,x-&gt;</code>, <code>q1,x-&gt;,</code>,  <code>q1,x-&gt;,R</code>,</li>
+</ol>
+<h3>Семантичні помилки</h3>
+<ol>
+<li><em>Перехід з такою умовою вже існує</em></li>
+<li><em>Жоден перехід програми не переводить машину у цей стан</em> - початковий стан не враховується</li>
+<li><em>Перехід у новий стан, що не визначений у програмі</em> - кінцевий стан не враховується</li>
+<li><em>Пасивна команда зациклить машину</em> - якщо команда не перезаписує символ, не робить рух та не переходить у новий стан</li>
+</ol>
+<h3>Помилки виконання програми машиною</h3>
+<ol>
+<li><em>Не знайдено перехід, що задовольняє поточну умову машини</em></li>
+<li><em>Перевищено допустиму довжину стрічки</em> - максимальна довжина стрічки задається у налаштуваннях машини. Потрібно для виявлення зациклення, наприклад, такою програмою:<pre><code class="hljs coffeescript">q, <span class="hljs-function">-&gt;</span>a,R,q
+q,b-&gt;,,!
+</code></pre>
+із пустою стрічкою на вході</li>
+<li><em>Перевищено максимальну кількість кроків виконання</em> - максимальна кількість кроків виконнання задається у налаштуваннях машини. Потрібно для виявлення зациклення, наприклад, такою програмою:<pre><code class="hljs coffeescript">q1, <span class="hljs-function">-&gt;</span>,R,q2
+q2, <span class="hljs-function">-&gt;</span>,L,q1
+q2,x-&gt;,,!
+</code></pre>
+із пустою стрічкою на вході</li>
+</ol>
+</div>
+				</div>
+				<div class="col-md-4">
+					<!-- toc <div id="toc"></div>-->
+				</div>
+			</div>
+
+			<hr/>
+
+		</div>
+	</div>
+	
+	<script>
+	$( document ).ready(function() {
+		moment.locale("uk");
+		$('[data-toggle="tooltip"]').tooltip();
+		update();
+		setInterval(update, 3000);
+		// generateTOC("post-body", "toc");
+	});
+	
+	function update() {
+		var moments = $('.mom');
+		$.each(moments, function(i, val) {
+			var obj = $(val);
+			var d = new Date(obj.attr('data-date'))
+			var date = moment(d);
+			obj.html(date.fromNow());
+		});
+	}
+	</script>
+  
+
+</body></html>

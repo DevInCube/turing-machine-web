@@ -1,0 +1,166 @@
+.graph {
+	border: 2px solid lightgray;
+    max-width: 570px;
+    height: 300px;
+    margin: auto;
+}
+.turing-container { margin-top: 20px; font-family: monospace; }
+.canvas { width: 100%; }		
+textarea.form-control {
+  	min-height: 300px;
+}
+textarea {
+    resize: none;
+}
+
+#input {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.commands__container {    
+    overflow-y: scroll;
+    padding: 0;  
+    min-height: 300px;  
+}
+
+.commands { 
+    width: 100%;
+    table-layout: auto; 
+    background-color: white;
+}
+
+.commands-error {
+    background-color: indianred;
+}
+
+.commands tr td {    
+    border: 1px solid lightgray;
+    text-align: center; 
+    font-weight: bold;
+    background-color: white;
+}
+.commands tr td:first-child,
+.commands tr td:nth-child(4) { 
+    color: gray;
+    background-color: #eef; 
+}
+
+.commands tr.active td {
+    font-weight: bold;
+    background-color: yellow;
+}
+
+.commands tr.active td:first-child,
+.commands tr.active td:nth-child(4) {
+    color: white;
+    background-color: gray;
+}
+
+.overlay-container {
+    position: relative;
+}
+
+.overlay-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;    
+    z-index: 10;
+}
+
+.overlay-base {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#run-error {
+    color: indianred;
+    padding: 0 15;
+}
+
+.beta-feature-link {
+    margin-top: 0px;
+}
+
+var {
+	background-color: lightsteelblue;
+}
+
+label {
+    margin-top: 5px;
+}
+
+.lines {
+    width: 40px;
+}
+
+.turing-container { margin-top: 20px; font-family: monospace; }
+table {
+	table-layout: auto; 
+	border:0px solid black;
+	border-spacing: 1px;
+	border-collapse: separate;
+}
+tr:first-child > td > input {
+	background: #eef;
+	font-weight: bold;
+	border-color: lightsteelblue;
+}
+tr > td:first-child > input {
+	background: #eef;
+	font-weight: bold;
+	border-color: lightsteelblue;
+}		
+td {
+	border:0px solid gray;
+	min-width: 20px;
+	height: 25px;			
+	text-align: center;
+}
+input[type=text] {
+	text-align: center;
+	width: 75px;
+	border: 1px solid lightgray;
+}
+#last-col {
+	width: 75px;
+}
+#grid-container {			
+	overflow: auto;
+	width: 100%;
+	padding: 10px;
+	border: 2px solid #eee;
+	height: 300px;
+}
+#algo {
+	height: 300px;
+}
+textarea {
+	resize: none;
+}
+
+#trans-errors {
+    padding: 5 10;
+    overflow: auto;
+}
+#trans-errors td {
+    list-style: none;
+    margin: 5px;
+    text-align: left;
+}
+
+.errors {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.list {
+    margin-top: 15px;
+}
+
+.center {
+    text-align: center;
+}
