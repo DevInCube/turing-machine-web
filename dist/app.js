@@ -960,13 +960,12 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
         }
     };
 });
-System.register("main", ["jquery", "rx", "TuringMachine", "TuringMachineCanvas", "tasks", "parsing", "VisStateGraph", "TransitionsTable"], function (exports_8, context_8) {
+System.register("main", ["jquery", "rxjs", "TuringMachine", "TuringMachineCanvas", "tasks", "parsing", "VisStateGraph", "TransitionsTable"], function (exports_8, context_8) {
     var __moduleName = context_8 && context_8.id;
     function init() {
         editor.setShowInvisibles(true);
         editor.$blockScrolling = Infinity;
-        rx_1.default.Observable.fromEvent(editor, 'input')
-            .debounce(200)
+        rxjs_1.fromEvent(editor, 'input')
             .subscribe(() => {
             let programText = editor.getValue();
             let transitionParseList = parsing_1.parseTransitions(programText);
@@ -1172,14 +1171,14 @@ System.register("main", ["jquery", "rx", "TuringMachine", "TuringMachineCanvas",
             }
         }, 300);
     }
-    var jquery_2, rx_1, TuringMachine_4, TuringMachineCanvas_1, tasks_1, parsing_1, VisStateGraph_1, TransitionsTable_1, set_btn, reset_btn, rerun_btn, step_btn, run_btn, input_el, tasks_el, error_counter, warn_counter, editor, machine, machineCanvas, previewTransitionsTable, runtimeTransitionsTable, constructorTable, previewGraph, runtimeGraph;
+    var jquery_2, rxjs_1, TuringMachine_4, TuringMachineCanvas_1, tasks_1, parsing_1, VisStateGraph_1, TransitionsTable_1, set_btn, reset_btn, rerun_btn, step_btn, run_btn, input_el, tasks_el, error_counter, warn_counter, editor, machine, machineCanvas, previewTransitionsTable, runtimeTransitionsTable, constructorTable, previewGraph, runtimeGraph;
     return {
         setters: [
             function (jquery_2_1) {
                 jquery_2 = jquery_2_1;
             },
-            function (rx_1_1) {
-                rx_1 = rx_1_1;
+            function (rxjs_1_1) {
+                rxjs_1 = rxjs_1_1;
             },
             function (TuringMachine_4_1) {
                 TuringMachine_4 = TuringMachine_4_1;

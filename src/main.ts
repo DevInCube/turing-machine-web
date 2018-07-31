@@ -1,6 +1,7 @@
 declare var ace: any;
 import $ from 'jquery';
-import Rx from 'rx';
+
+import { fromEvent } from 'rxjs';
 
 import { TuringMachine } from './TuringMachine';
 import { TuringMachineCanvas } from './TuringMachineCanvas';
@@ -34,8 +35,8 @@ function init() {
 	editor.setShowInvisibles(true);
 	editor.$blockScrolling = Infinity;
 
-	Rx.Observable.fromEvent(editor, 'input')
-		.debounce(200)
+	fromEvent(editor, 'input')
+		// .debounce(200) @todo how to import this?
 		.subscribe(() => {
 			let programText = editor.getValue();
 			let transitionParseList = parseTransitions(programText);
