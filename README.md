@@ -8,13 +8,13 @@ Clone sources and install dependencies with:
 npm install
 ```
 
-Build Turing Machine App bundle with Webpack:
+Start Build & Watch with:
 
 ```cmd
-npm run build
+npm cbuild
 ```
 
-Start ExpressJS server with:
+Run app server with:
 
 ```cmd
 npm start
