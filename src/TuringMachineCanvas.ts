@@ -4,8 +4,8 @@ export class TuringMachineCanvas {
 	static cell_size: number = 40;
 	static cell_border: number = 2;
 
-	private machine: TuringMachine;
-	private ctx: CanvasRenderingContext2D;
+	private machine: TuringMachine | null;
+	private ctx: CanvasRenderingContext2D | null;
 	private font_size: number;
 
 	constructor(readonly canvas: HTMLCanvasElement) {
@@ -79,7 +79,7 @@ export class TuringMachineCanvas {
 	}
 
 	drawEmptyCell(x: number, y: number, size: number, opacity: number): void {
-		var ctx = this.ctx;
+		var ctx = this.ctx as CanvasRenderingContext2D;
 		ctx.fillStyle = `rgba(230, 230, 230, ${opacity})`;
 		ctx.fillRect(x, y, size, size);
 		ctx.beginPath();
@@ -93,7 +93,7 @@ export class TuringMachineCanvas {
 
 	drawStripCell(x: number, y: number, value: string): void {
 		this.drawEmptyCell(x, y, TuringMachineCanvas.cell_size, 1);
-		var ctx = this.ctx;
+		var ctx = this.ctx as CanvasRenderingContext2D;
 
 		ctx.fillStyle = '#000000';
 		ctx.font = `${this.font_size}px Consolas`;
@@ -104,13 +104,13 @@ export class TuringMachineCanvas {
 	}
 
 	drawCaretBack(x: number, y: number, isStopped: boolean): void {
-		var ctx = this.ctx;
+		var ctx = this.ctx as CanvasRenderingContext2D;
 		ctx.fillStyle = isStopped ? '#ffcccc' : '#ccccff';
 		ctx.fillRect(x, y, TuringMachineCanvas.cell_size, TuringMachineCanvas.cell_size * 3);
 	}
 
 	drawCurrentState(x: number, y: number, stateId: string): void {
-		var ctx = this.ctx;
+		var ctx = this.ctx as CanvasRenderingContext2D;
 		ctx.fillStyle = '#000000';
 		var font_size = this.font_size - 10;
 		ctx.font = `${font_size}px Consolas bold`;
@@ -121,7 +121,7 @@ export class TuringMachineCanvas {
 	}
 
 	drawCaretFront(x: number, y: number): void {
-		var ctx = this.ctx;
+		var ctx = this.ctx as CanvasRenderingContext2D;
 		ctx.beginPath();
 		ctx.lineWidth = TuringMachineCanvas.cell_border * 2;
 		ctx.strokeStyle = "black";

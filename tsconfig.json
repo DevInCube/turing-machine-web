@@ -1,11 +1,20 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
+        "outFile": "./dist/app.js",
+        "module": "system",
+        "moduleResolution": "node",
         "target": "es2017",
-        "jsx": "react"
+        
+        "watch": true,
+        "sourceMap": true,
+
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitUseStrict": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false
     },
     "include": [
         "./src/**/*"

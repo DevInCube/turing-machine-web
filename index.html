@@ -1,0 +1,171 @@
+<html><head>
+	<meta charset="utf-8">
+	<title>Машина Тюринга</title>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"></script>	
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/turing.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.19/system.js"></script>
+    <script src="./dist/system.config.js"></script>
+    <script src="./dist/app.js"></script>
+    <script>
+        window.addEventListener('load', function(e) {
+            System
+                .import('main')
+                .then(null, console.error.bind(console));
+        });
+    </script>
+
+</head>
+<body>
+<div class="container turing-container">
+	<h1>Машина Тюринга</h1>
+	<hr/>
+	<div class='center'>
+		<div id="loading" class="alert alert-info" role="alert">
+		Завантаження...
+		</div>
+	</div>
+
+	<div id="app" style="display:none;">
+		<div class="row">
+			<div class="col-md-3 col-sm-4 col-xs-12">
+				<label style='margin-top: 48px;'>Програма:</label>
+				<div id="algo"></div>
+			</div>
+			<div class="col-md-9 col-sm-8 col-xs-12">
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#preview" aria-controls="home" role="tab" data-toggle="tab">Граф станів</a></li>
+					<li role="presentation"><a href="#table" aria-controls="profile" role="tab" data-toggle="tab">Таблиця станів</a></li>
+					<li role="presentation">
+						<a href="#errors" aria-controls="profile" role="tab" data-toggle="tab">
+							Помилки
+							<span id='warn-counter' class="label label-warning" style='display: none;'>0</span>
+							<span id='error-counter' class="label label-danger" style='display: none;'>0</span>
+						</a>
+					</li>
+					<li role="presentation"><a href="#tasks" aria-controls="profile" role="tab" data-toggle="tab">Приклади задач</a></li>
+					<li role="presentation"><a href="#links" aria-controls="profile" role="tab" data-toggle="tab">Посилання</a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="preview">
+
+						<div class="row">
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div><label>Таблиця переходів:</label></div>
+								<div class="overlay-container">
+									<div class="form-control overlay-base commands__container">
+										<table id="commands" class='commands'></table>
+									</div>						
+								</div>
+							</div>
+							<div class="col-md-8 col-sm-6 col-xs-12">
+								<label>Діаграма станів:</label>
+								<div id="preview-graph" class='graph'></div>
+							</div>
+						</div>
+
+					</div>
+
+					<div role="tabpanel" class="tab-pane" id="table">
+
+						<div id="grid-container">
+							<table id="table-constructor"></table>
+						</div>
+						<div class="btn-group" role="group">
+							<button id="add-col" class="btn btn-default">+ Символ</button>
+							<button id="add-row" class="btn btn-default">+ Стан</button>
+							<button id="rem-col" class="btn btn-default">- Символ</button>				
+							<button id="rem-row" class="btn btn-default">- Стан</button>
+						</div>
+						<p>Ви можете використовувати символ <code>_</code> у таблиці для представлення пробілу</p>
+
+					</div>
+
+					<div role="tabpanel" class="tab-pane" id="errors">
+						<div class='errors'>
+							<table class="table table-striped table-condensed">
+								<thead>
+									<tr>
+										<th>Type</th>
+										<th>Line</th>
+										<th>Error description</th>
+									</tr>
+								</thead>
+								<tbody id="trans-errors">
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div role="tabpanel" class="tab-pane" id="tasks">
+						<ul id="tasks-list" class='list'></ul>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="links">
+						<ul id="links-list" class='list'>
+							<li><a target="_blank" href='/help/turing-machine'>Що таке Машина Тюринга</a></li>
+							<li><a target="_blank" href='/help/turing-machine-program'>Мова переходів для Машини Тюринга</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<hr/>
+
+		<label>Вхідне слово:</label>
+		<div>
+			<input id="input" class="form-control" value="default">
+			<br/>
+			<button href='#run' id="set_btn" class="btn btn-primary" >Встановити</button> - Машина налаштовується відповідно до таблиці переходів, а на стрічку записується вхідне слово
+		</div>
+		<hr id='run'/>
+		<h3>Виконання програми</h3>
+		<div>
+			<button id="step_btn" class="btn btn-default" title='Виконати один крок машини' disabled>
+				<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>  Крок
+			</button>
+			<button id="run_btn" class="btn btn-default" title='Виконати програму до кінця' disabled>
+				<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Виконати
+			</button>
+			<button id="reset_btn" class="btn btn-default" title='Перевести машину у початковий стан' disabled>
+				<span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span> Скинути
+			</button>
+			<button id="reset_and_run_btn" class="btn btn-default" title='Виконати програму ще раз' disabled>
+				<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Скинути і виконати
+			</button>
+
+			<label id="run-error"> </label>
+		</div>
+
+		<div class="row">
+			<canvas id="canvas" style="width: 100%;" height="300"></canvas>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="overlay-container">
+					<div class="form-control overlay-base commands__container">
+						<table id="commands-run" class='commands'></table>
+					</div>						
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div id="runtime-graph" class='graph'></div>
+			</div>
+		</div>
+	</div>
+<hr/>
+</div>
+</body>
+</html>

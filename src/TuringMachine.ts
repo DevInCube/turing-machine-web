@@ -180,9 +180,9 @@ export class TuringMachine {
 		return -1;
 	}
 
-	getNextTransition(): TuringTransition {
+	getNextTransition(): TuringTransition | undefined {
 		let index = this.getNextTransitionIndex();
-		return index >= 0 ? this.transitions[index] : null;
+		return index >= 0 ? this.transitions[index] : undefined;
 	}
 
 	getCurrentState(): string {
@@ -230,7 +230,7 @@ export class TuringMachine {
 		return this.strip;
 	}
 
-	getOutput(): string {
-		return this.stop ? this.strip.getOutput() : null;
+	getOutput(): string | undefined {
+		return this.stop ? this.strip.getOutput() : undefined;
 	}
 }

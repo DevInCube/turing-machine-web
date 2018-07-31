@@ -1,5 +1,5 @@
 import { MoveDirection, TuringTransition } from './Transition'
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 export class TransitionsConstructorTable {
     constructor(readonly table: HTMLTableElement, readonly inputHandler: () => void) {
@@ -122,14 +122,14 @@ export class TransitionsConstructorTable {
             }
         }
 
-        function getTransition(_state: string, _value: string): TuringTransition {
+        function getTransition(_state: string, _value: string): TuringTransition | undefined {
             for (let trans of transitions) {
                 if (trans.condition.state === _state &&
                     trans.condition.value === _value) {
                     return trans;
                 }
             }
-            return null;
+            return undefined;
         }
     }
 }

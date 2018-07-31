@@ -186,13 +186,12 @@ export function parseTransitions(text: string): TuringTransitionParseInfo[] {
 	for (let [lineIndex, line] of text.replace(/\r/g, '').split('\n').entries()) {
 		if (line === '') continue;
 		let error;
-		let transition;
 		try {
-			transition = parseTransition(line);
+			let transition = parseTransition(line);
+			transitions.push(new TuringTransitionParseInfo(transition, { raw: line, line: lineIndex + 1, error }));
 		} catch (err) {
 			error = err;
 		}
-		transitions.push(new TuringTransitionParseInfo(transition, { raw: line, line: lineIndex + 1, error }));
 	}
 	return transitions;
 }

@@ -2,20 +2,20 @@
 
 ## Installation and build
 
-Clone sources and install dependencies with: 
+Clone sources and install dependencies with:
 
-```
+```cmd
 npm install
 ```
 
 Build Turing Machine App bundle with Webpack:
 
-```
+```cmd
 npm run build
 ```
 
 Start ExpressJS server with:
 
-```
+```cmd
 npm start
 ```

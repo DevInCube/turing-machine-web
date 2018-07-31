@@ -1,8 +1,7 @@
-import * as vis from 'vis';
+import vis from 'vis';
 
 import { TuringTransition } from './Transition';
 import { TuringMachine } from './TuringMachine';
-import { TuringTransitionError } from './parsing';
 
 interface StateGraph {
     [id: string]: TuringTransition[]
