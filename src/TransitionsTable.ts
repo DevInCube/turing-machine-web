@@ -16,24 +16,28 @@ export class TransitionsConstructorTable {
     }
 
     appendRow() {
-        var colsLen = this.table.rows[0].cells.length;
-        var row = this.table.insertRow(this.table.rows.length);
+        const rowsLen = this.table.rows.length;
+        const colsLen = this.table.rows[0].cells.length;
+        var row = this.table.insertRow(rowsLen);
         for (var i = 0; i < colsLen; i++) {
             var cell = row.insertCell(0);
             let input = document.createElement('input');
             input.setAttribute('type', 'text');
+            input.value = i === (colsLen - 1) ? 'qZ' : ',N,!';
             input.addEventListener('input', this.inputHandler);
             cell.appendChild(input);
         }
     }
 
     appendColumn() {
-        var colsLen = this.table.rows[0].cells.length;
-        for (var i = 0; i < this.table.rows.length; i++) {
+        const rowsLen = this.table.rows.length;
+        const colsLen = this.table.rows[0].cells.length;
+        for (var i = 0; i < rowsLen; i++) {
             var row = this.table.rows[i];
             var cell = row.insertCell(colsLen);
             let input = document.createElement('input');
             input.setAttribute('type', 'text');
+            input.value = i === 0 ? 'z' : ',N,!';
             input.addEventListener('input', this.inputHandler);
             cell.appendChild(input);
         }
@@ -61,16 +65,17 @@ export class TransitionsConstructorTable {
     }
 
     getProgramFromTable(): string {
-        var re = /_/g;
-        var programText = '';
-        var colsLen = this.table.rows[0].cells.length;
-        for (var i = 1; i < this.table.rows.length; i++) {
-            var state = (<HTMLInputElement>this.table.rows[i].cells[0].children[0]).value;
-            for (var j = 1; j < colsLen; j++) {
-                var inputSym = (<HTMLInputElement>this.table.rows[0].cells[j].children[0]).value;
-                var value = (<HTMLInputElement>this.table.rows[i].cells[j].children[0]).value;
+        const re = /_/g;
+        let programText = '';
+        const colsLen = this.table.rows[0].cells.length;
+        for (let i = 1; i < this.table.rows.length; i++) {
+            const state = (<HTMLInputElement>this.table.rows[i].cells[0].children[0]).value;
+            for (let j = 1; j < colsLen; j++) {
+                const inputSym = (<HTMLInputElement>this.table.rows[0].cells[j].children[0]).value;
+                const value = (<HTMLInputElement>this.table.rows[i].cells[j].children[0]).value;
                 if (value) {
-                    programText += `${state},${inputSym}->${value.trim()}`.replace(re, ' ') + "\n";
+                    const command = `${state},${inputSym}->${value.trim()}`;
+                    programText += `${command.replace(re, ' ')}\n`;
                 }
             }
         }

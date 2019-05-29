@@ -47,211 +47,13 @@ System.register("Transition", [], function (exports_1, context_1) {
         }
     };
 });
-System.register("TransitionsTable", ["Transition", "jquery"], function (exports_2, context_2) {
+System.register("TuringMachine", ["Transition"], function (exports_2, context_2) {
     var __moduleName = context_2 && context_2.id;
-    // utils
-    function uniq(a) {
-        var seen = {};
-        return a.filter(function (item) {
-            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-        });
-    }
-    var Transition_1, jquery_1, TransitionsConstructorTable, TransitionsTable;
+    var Transition_1, TuringMachineCaret, TuringMachineStrip, TuringMachine;
     return {
         setters: [
             function (Transition_1_1) {
                 Transition_1 = Transition_1_1;
-            },
-            function (jquery_1_1) {
-                jquery_1 = jquery_1_1;
-            }
-        ],
-        execute: function () {
-            TransitionsConstructorTable = class TransitionsConstructorTable {
-                constructor(table, inputHandler) {
-                    this.table = table;
-                    this.inputHandler = inputHandler;
-                    jquery_1.default(table)
-                        .append(jquery_1.default('<tr>')
-                        .append(jquery_1.default('<td>'))
-                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text'))))
-                        .append(jquery_1.default('<tr>')
-                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text')))
-                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text'))));
-                    for (let cell of jquery_1.default('.init-cell')) {
-                        cell.addEventListener('input', this.inputHandler);
-                    }
-                }
-                appendRow() {
-                    var colsLen = this.table.rows[0].cells.length;
-                    var row = this.table.insertRow(this.table.rows.length);
-                    for (var i = 0; i < colsLen; i++) {
-                        var cell = row.insertCell(0);
-                        let input = document.createElement('input');
-                        input.setAttribute('type', 'text');
-                        input.addEventListener('input', this.inputHandler);
-                        cell.appendChild(input);
-                    }
-                }
-                appendColumn() {
-                    var colsLen = this.table.rows[0].cells.length;
-                    for (var i = 0; i < this.table.rows.length; i++) {
-                        var row = this.table.rows[i];
-                        var cell = row.insertCell(colsLen);
-                        let input = document.createElement('input');
-                        input.setAttribute('type', 'text');
-                        input.addEventListener('input', this.inputHandler);
-                        cell.appendChild(input);
-                    }
-                }
-                removeLastRow() {
-                    if (this.table.rows.length > 2) {
-                        for (let cell of [].slice.call(this.table.rows[this.table.rows.length - 1].cells)) {
-                            cell.removeEventListener('input', this.inputHandler);
-                        }
-                        this.table.deleteRow(this.table.rows.length - 1);
-                    }
-                }
-                removeLastColumn() {
-                    var colsLen = this.table.rows[0].cells.length;
-                    if (colsLen > 2) {
-                        for (var i = 0; i < this.table.rows.length; i++) {
-                            var row = this.table.rows[i];
-                            let cell = row.cells[colsLen - 1];
-                            cell.removeEventListener('input', this.inputHandler);
-                            row.deleteCell(colsLen - 1);
-                        }
-                    }
-                }
-                getProgramFromTable() {
-                    var re = /_/g;
-                    var programText = '';
-                    var colsLen = this.table.rows[0].cells.length;
-                    for (var i = 1; i < this.table.rows.length; i++) {
-                        var state = this.table.rows[i].cells[0].children[0].value;
-                        for (var j = 1; j < colsLen; j++) {
-                            var inputSym = this.table.rows[0].cells[j].children[0].value;
-                            var value = this.table.rows[i].cells[j].children[0].value;
-                            if (value) {
-                                programText += `${state},${inputSym}->${value.trim()}`.replace(re, ' ') + "\n";
-                            }
-                        }
-                    }
-                    return programText;
-                }
-                createTable(width, height) {
-                    while (this.table.rows.length > 2) {
-                        this.removeLastRow();
-                    }
-                    while (this.table.rows[0].cells.length > 2) {
-                        this.removeLastColumn();
-                    }
-                    this.setTableCellValue(0, 1, '');
-                    this.setTableCellValue(1, 0, '');
-                    this.setTableCellValue(1, 1, '');
-                    while (this.table.rows.length < height + 1)
-                        this.appendRow();
-                    while (this.table.rows[0].cells.length < width + 1)
-                        this.appendColumn();
-                }
-                setTableCellValue(i, j, value) {
-                    this.table.rows[i].cells[j].children[0].value = value;
-                }
-                update(transitions) {
-                    let symbols = uniq(transitions.map(x => x.condition.value)).sort();
-                    let states = uniq(transitions.map(x => x.condition.state)).sort();
-                    this.createTable(symbols.length, states.length);
-                    for (let i = 0; i < states.length + 1; i++) {
-                        for (let j = 0; j < symbols.length + 1; j++) {
-                            if (i === 0 && j === 0)
-                                continue;
-                            let state = '';
-                            let value = '';
-                            if (i > 0)
-                                state = states[i - 1];
-                            if (j > 0)
-                                value = symbols[j - 1];
-                            if (i === 0 && j > 0) {
-                                if (value === ' ')
-                                    value = '_';
-                                this.setTableCellValue(i, j, value);
-                            }
-                            if (j === 0 && i > 0) {
-                                this.setTableCellValue(i, j, state);
-                            }
-                            if (i > 0 && j > 0) {
-                                let transition = getTransition(state, value);
-                                if (transition) {
-                                    let input = (transition.command.input === ' ') ? "_" : transition.command.input;
-                                    let move = (transition.command.move_dir) ? transition.command.move_dir.toString() : '';
-                                    let transitionCommand = `${input},${move},${transition.command.new_state}`;
-                                    this.setTableCellValue(i, j, transitionCommand);
-                                }
-                            }
-                        }
-                    }
-                    function getTransition(_state, _value) {
-                        for (let trans of transitions) {
-                            if (trans.condition.state === _state &&
-                                trans.condition.value === _value) {
-                                return trans;
-                            }
-                        }
-                        return undefined;
-                    }
-                }
-            };
-            exports_2("TransitionsConstructorTable", TransitionsConstructorTable);
-            TransitionsTable = class TransitionsTable {
-                constructor(table) {
-                    this.table = table;
-                }
-                update(transitions) {
-                    let transitions_table_id = this.table.getAttribute('id');
-                    jquery_1.default(this.table).empty();
-                    for (let [i, t] of transitions.entries()) {
-                        let row = jquery_1.default('<tr>').attr('id', transitions_table_id + '_' + i)
-                            .append(jquery_1.default('<td>').append(i.toString()))
-                            .append(jquery_1.default('<td>').html(`(${t.condition.state})`))
-                            .append(jquery_1.default('<td>').html(`'${t.condition.value}'`))
-                            .append(jquery_1.default('<td>').html('—>'))
-                            .append(jquery_1.default('<td>').html(`'${t.command.input}'`))
-                            .append(jquery_1.default('<td>').html(this.moveDirectionToString(t.command.move_dir)))
-                            .append(jquery_1.default('<td>').html(`(${t.command.new_state})`));
-                        jquery_1.default(this.table).append(jquery_1.default(row));
-                    }
-                }
-                moveDirectionToString(move_dir) {
-                    switch (move_dir) {
-                        case Transition_1.MoveDirection.Left: return '<- L';
-                        case Transition_1.MoveDirection.Right: return 'R ->';
-                        default: return 'N';
-                    }
-                }
-                setNextTransition(index) {
-                    for (let row of [].slice.call(this.table.rows)) {
-                        jquery_1.default(row).removeClass('active');
-                    }
-                    if (index >= 0) {
-                        jquery_1.default(this.table.rows[index]).addClass('active');
-                        jquery_1.default(this.table).removeClass('commands-error');
-                    }
-                    else {
-                        jquery_1.default(this.table).addClass('commands-error');
-                    }
-                }
-            };
-            exports_2("TransitionsTable", TransitionsTable);
-        }
-    };
-});
-System.register("TuringMachine", ["Transition"], function (exports_3, context_3) {
-    var __moduleName = context_3 && context_3.id;
-    var Transition_2, TuringMachineCaret, TuringMachineStrip, TuringMachine;
-    return {
-        setters: [
-            function (Transition_2_1) {
-                Transition_2 = Transition_2_1;
             }
         ],
         execute: function () {
@@ -268,15 +70,15 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                 move(dir) {
                     this.position = this.strip.pre_expand(dir, this.position);
                     switch (dir) {
-                        case Transition_2.MoveDirection.Left: {
+                        case Transition_1.MoveDirection.Left: {
                             this.position -= 1;
                             break;
                         }
-                        case Transition_2.MoveDirection.Right: {
+                        case Transition_1.MoveDirection.Right: {
                             this.position += 1;
                             break;
                         }
-                        case Transition_2.MoveDirection.None:
+                        case Transition_1.MoveDirection.None:
                             break;
                         default:
                             throw `'${dir}' is not a valid caret move direction`;
@@ -290,7 +92,7 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                     this.position = 1;
                 }
             };
-            exports_3("TuringMachineCaret", TuringMachineCaret);
+            exports_2("TuringMachineCaret", TuringMachineCaret);
             TuringMachineStrip = class TuringMachineStrip {
                 constructor() {
                     this.cells = [
@@ -307,14 +109,14 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                 }
                 pre_expand(dir, index) {
                     switch (dir) {
-                        case Transition_2.MoveDirection.Left: {
+                        case Transition_1.MoveDirection.Left: {
                             if ((index == this.cells.length - 2)
                                 && (this.cells[index] == TuringMachineStrip.empty_symbol)) {
                                 this.cells.pop();
                             }
                             break;
                         }
-                        case Transition_2.MoveDirection.Right: {
+                        case Transition_1.MoveDirection.Right: {
                             if ((index == 1)
                                 && (this.cells[index] == TuringMachineStrip.empty_symbol)) {
                                 this.cells.shift();
@@ -327,14 +129,14 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                 }
                 post_expand(dir, index) {
                     switch (dir) {
-                        case Transition_2.MoveDirection.Left: {
+                        case Transition_1.MoveDirection.Left: {
                             if (index == 0) {
                                 this.cells.unshift(TuringMachineStrip.empty_symbol);
                                 return 1;
                             }
                             break;
                         }
-                        case Transition_2.MoveDirection.Right: {
+                        case Transition_1.MoveDirection.Right: {
                             if (index == this.cells.length - 1)
                                 this.cells.push(TuringMachineStrip.empty_symbol);
                             break;
@@ -359,7 +161,7 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                 }
             };
             TuringMachineStrip.empty_symbol = ' ';
-            exports_3("TuringMachineStrip", TuringMachineStrip);
+            exports_2("TuringMachineStrip", TuringMachineStrip);
             //=============================================================
             TuringMachine = class TuringMachine {
                 constructor(states, initial_state, transitions) {
@@ -373,7 +175,7 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                     this.setState(this.initial_state);
                 }
                 get configuration() {
-                    return new Transition_2.TuringCondition(this.state, this.getCurrentCellValue());
+                    return new Transition_1.TuringCondition(this.state, this.getCurrentCellValue());
                 }
                 get strip_cells() {
                     return this.strip.cells;
@@ -454,12 +256,12 @@ System.register("TuringMachine", ["Transition"], function (exports_3, context_3)
                 }
             };
             TuringMachine.stop_state = '!';
-            exports_3("TuringMachine", TuringMachine);
+            exports_2("TuringMachine", TuringMachine);
         }
     };
 });
-System.register("TuringMachineCanvas", ["TuringMachine"], function (exports_4, context_4) {
-    var __moduleName = context_4 && context_4.id;
+System.register("TuringMachineCanvas", ["TuringMachine"], function (exports_3, context_3) {
+    var __moduleName = context_3 && context_3.id;
     var TuringMachine_1, TuringMachineCanvas;
     return {
         setters: [
@@ -577,146 +379,12 @@ System.register("TuringMachineCanvas", ["TuringMachine"], function (exports_4, c
             };
             TuringMachineCanvas.cell_size = 40;
             TuringMachineCanvas.cell_border = 2;
-            exports_4("TuringMachineCanvas", TuringMachineCanvas);
+            exports_3("TuringMachineCanvas", TuringMachineCanvas);
         }
     };
 });
-System.register("VisStateGraph", ["vis", "TuringMachine"], function (exports_5, context_5) {
-    var __moduleName = context_5 && context_5.id;
-    function transitionsToStateGraph(transitions) {
-        var stateGraph = {
-            [TuringMachine_2.TuringMachine.stop_state]: []
-        };
-        for (let transition of transitions) {
-            var state = transition.condition.state;
-            if (!stateGraph.hasOwnProperty(state))
-                stateGraph[state] = [];
-            stateGraph[state].push(transition);
-        }
-        return stateGraph;
-    }
-    function stateGraphToVisNetworkData(stateGraph) {
-        var nodes = [];
-        var edges = [];
-        for (let stateId in stateGraph) {
-            let netNode = {
-                id: stateId,
-                label: stateId,
-                font: {
-                    size: 18,
-                },
-                color: {
-                    highlight: { background: 'yellow' },
-                    background: stateId == TuringMachine_2.TuringMachine.stop_state ? '#faa' : 'lightsteelblue'
-                },
-                fixed: stateId == TuringMachine_2.TuringMachine.stop_state
-            };
-            nodes.push(netNode);
-            let self_count = 10;
-            for (let edge of stateGraph[stateId]) {
-                if (edge.command.new_state == stateId)
-                    self_count += 10;
-                let text = `'${edge.condition.value}'/'${edge.command.input}',${edge.command.move_dir}`;
-                let netEdge = {
-                    id: stateId + text,
-                    from: stateId,
-                    to: edge.command.new_state,
-                    label: text,
-                    title: text,
-                    arrows: "to",
-                    selfReferenceSize: self_count
-                };
-                edges.push(netEdge);
-            }
-        }
-        return {
-            nodes: new vis_1.default.DataSet(nodes),
-            edges: new vis_1.default.DataSet(edges)
-        };
-    }
-    function getVisNetworkOptions() {
-        var options = {
-            nodes: {
-                color: {
-                    border: 'steelblue',
-                },
-                font: {
-                    face: 'consolas'
-                }
-            },
-            physics: {
-                enabled: true,
-                repulsion: {
-                    centralGravity: 0,
-                    springConstant: 0.2,
-                    damping: 0.3,
-                },
-                solver: 'repulsion',
-            },
-            edges: {
-                color: {
-                    color: 'steelblue',
-                    highlight: 'lightsteelblue',
-                },
-                font: {
-                    face: 'consolas'
-                },
-                length: 200,
-                smooth: {
-                    enabled: true,
-                    type: 'dynamic',
-                },
-            },
-            layout: {
-                randomSeed: 0,
-                hierarchical: { enabled: false, }
-            }
-        };
-        return options;
-    }
-    var vis_1, TuringMachine_2, VisStateGraph;
-    return {
-        setters: [
-            function (vis_1_1) {
-                vis_1 = vis_1_1;
-            },
-            function (TuringMachine_2_1) {
-                TuringMachine_2 = TuringMachine_2_1;
-            }
-        ],
-        execute: function () {
-            ;
-            VisStateGraph = class VisStateGraph {
-                constructor(container, options = { interactive: true }) {
-                    this.container = container;
-                    this.options = options;
-                }
-                update(transitions) {
-                    let states = transitionsToStateGraph(transitions);
-                    let data = stateGraphToVisNetworkData(states);
-                    // create a network
-                    let options = getVisNetworkOptions();
-                    if (!this.options.interactive) {
-                        options = Object.assign({}, getVisNetworkOptions(), {
-                            interaction: {
-                                dragNodes: false,
-                                dragView: true,
-                                selectable: false
-                            }
-                        });
-                    }
-                    this.network = new vis_1.default.Network(this.container, data, options);
-                }
-                setActiveState(state) {
-                    this.network.selectNodes([state], false);
-                }
-            };
-            exports_5("VisStateGraph", VisStateGraph);
-        }
-    };
-});
-System.register("tasks", [], function (exports_6, context_6) {
-    var __moduleName = context_6 && context_6.id;
+System.register("tasks", [], function (exports_4, context_4) {
+    var __moduleName = context_4 && context_4.id;
     var Task, tasks;
     return {
         setters: [],
@@ -729,9 +397,9 @@ System.register("tasks", [], function (exports_6, context_6) {
                     this.memo = memo;
                 }
             };
-            exports_6("Task", Task);
+            exports_4("Task", Task);
             ;
-            exports_6("tasks", tasks = {});
+            exports_4("tasks", tasks = {});
             tasks['empty'] = new Task(' ', ' ', 'q1, ->,,!', 'Пустий приклад');
             tasks['hello'] = new Task('hello.', 'HELLO!', 'q0,h->H,R,q0\nq0,e->E,R,q0\nq0,l->L,R,q0\nq0,o->O,R,q0\nq0,.->!,R,q1\nq1, -> ,L,!', 'Перевести всі букви у верхній регістр. Замінити точку на знак оклику.');
             tasks['inc10'] = new Task('199', '200', 'q0,0->,R,\nq0,1->,R,\nq0,2->,R,\nq0,3->,R,\nq0,4->,R,\nq0,5->,R,\nq0,6->,R,\nq0,7->,R,\nq0,8->,R,\nq0,9->,R,\nq0, ->,L,q1\nq1,0->1,,!\nq1,1->2,,!\nq1,2->3,,!\nq1,3->4,,!\nq1,4->5,,!\nq1,5->6,,!\nq1,6->7,,!\nq1,7->8,,!\nq1,8->9,,!\nq1,9->0,L,\nq1, ->1,,!', 'Інкрементувати число, що представлене в десятковій системі числення');
@@ -741,8 +409,8 @@ System.register("tasks", [], function (exports_6, context_6) {
         }
     };
 });
-System.register("parsing", ["TuringMachine", "Transition"], function (exports_7, context_7) {
-    var __moduleName = context_7 && context_7.id;
+System.register("parsing", ["TuringMachine", "Transition"], function (exports_5, context_5) {
+    var __moduleName = context_5 && context_5.id;
     // @todo 'expand' program from syntactic sugar and do checks on expanded transitions
     function getErrors(transitionParseInfoList) {
         let errors = [];
@@ -752,7 +420,7 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
         }
         let states = {};
         states[''] = { to: 1, from: 1 }; // @todo remove in expanded
-        states[TuringMachine_3.TuringMachine.stop_state] = { to: 0, from: 1 };
+        states[TuringMachine_2.TuringMachine.stop_state] = { to: 0, from: 1 };
         for (let info of transitionParseInfoList.filter(x => x.error)) {
             errors.push(new TuringTransitionError(info.error, { line: info.line, raw: info.raw }));
         }
@@ -779,7 +447,7 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
         for (let tInfo of transitionParseInfoList) {
             let t = tInfo.transition;
             if ((!t.command.input || t.command.input === t.condition.value) &&
-                (!t.command.move_dir || t.command.move_dir === Transition_3.MoveDirection.None) &&
+                (!t.command.move_dir || t.command.move_dir === Transition_2.MoveDirection.None) &&
                 (!t.command.new_state || t.command.new_state === t.condition.state)) {
                 errors.push(new TuringTransitionError(`Passive command will lock the machine in infinite loop`, { type: TuringTransitionErrorType.Warning, line: tInfo.line }));
             }
@@ -812,13 +480,13 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
         }
         return errors;
     }
-    exports_7("getErrors", getErrors);
+    exports_5("getErrors", getErrors);
     //
     function stringToMoveDirection(str) {
         switch (str) {
-            case 'L': return Transition_3.MoveDirection.Left;
-            case 'R': return Transition_3.MoveDirection.Right;
-            case 'N': return Transition_3.MoveDirection.None;
+            case 'L': return Transition_2.MoveDirection.Left;
+            case 'R': return Transition_2.MoveDirection.Right;
+            case 'N': return Transition_2.MoveDirection.None;
             default: throw `Unsupported move direction: ${str}`;
         }
     }
@@ -891,9 +559,9 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
                     break;
             }
         }
-        var condition = new Transition_3.TuringCondition(cond_state, cond_value);
-        var command = new Transition_3.TuringCommand(input || cond_value, stringToMoveDirection(move || "N"), new_state || cond_state);
-        return new Transition_3.TuringTransition(condition, command);
+        var condition = new Transition_2.TuringCondition(cond_state, cond_value);
+        var command = new Transition_2.TuringCommand(input || cond_value, stringToMoveDirection(move || "N"), new_state || cond_state);
+        return new Transition_2.TuringTransition(condition, command);
     }
     function parseTransitions(text) {
         let transitions = [];
@@ -911,15 +579,15 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
         }
         return transitions;
     }
-    exports_7("parseTransitions", parseTransitions);
-    var TuringMachine_3, Transition_3, TuringTransitionErrorType, TuringTransitionError, TuringTransitionParseInfo, ParseState;
+    exports_5("parseTransitions", parseTransitions);
+    var TuringMachine_2, Transition_2, TuringTransitionErrorType, TuringTransitionError, TuringTransitionParseInfo, ParseState;
     return {
         setters: [
-            function (TuringMachine_3_1) {
-                TuringMachine_3 = TuringMachine_3_1;
+            function (TuringMachine_2_1) {
+                TuringMachine_2 = TuringMachine_2_1;
             },
-            function (Transition_3_1) {
-                Transition_3 = Transition_3_1;
+            function (Transition_2_1) {
+                Transition_2 = Transition_2_1;
             }
         ],
         execute: function () {
@@ -928,7 +596,7 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
                 TuringTransitionErrorType["Warning"] = "warning";
                 TuringTransitionErrorType["Information"] = "information";
             })(TuringTransitionErrorType || (TuringTransitionErrorType = {}));
-            exports_7("TuringTransitionErrorType", TuringTransitionErrorType);
+            exports_5("TuringTransitionErrorType", TuringTransitionErrorType);
             TuringTransitionError = class TuringTransitionError {
                 constructor(text, options = {}) {
                     this.text = text;
@@ -937,7 +605,7 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
                     this.raw = options.raw;
                 }
             };
-            exports_7("TuringTransitionError", TuringTransitionError);
+            exports_5("TuringTransitionError", TuringTransitionError);
             TuringTransitionParseInfo = class TuringTransitionParseInfo {
                 constructor(transition, { raw, line, error }) {
                     this.transition = transition;
@@ -946,7 +614,7 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
                     this.error = error;
                 }
             };
-            exports_7("TuringTransitionParseInfo", TuringTransitionParseInfo);
+            exports_5("TuringTransitionParseInfo", TuringTransitionParseInfo);
             ;
             (function (ParseState) {
                 ParseState[ParseState["ConditionState"] = 0] = "ConditionState";
@@ -957,6 +625,343 @@ System.register("parsing", ["TuringMachine", "Transition"], function (exports_7,
                 ParseState[ParseState["Arrow"] = 5] = "Arrow";
             })(ParseState || (ParseState = {}));
             ;
+        }
+    };
+});
+System.register("VisStateGraph", ["vis", "TuringMachine"], function (exports_6, context_6) {
+    var __moduleName = context_6 && context_6.id;
+    function transitionsToStateGraph(transitions) {
+        var stateGraph = {
+            [TuringMachine_3.TuringMachine.stop_state]: []
+        };
+        for (let transition of transitions) {
+            var state = transition.condition.state;
+            if (!stateGraph.hasOwnProperty(state))
+                stateGraph[state] = [];
+            stateGraph[state].push(transition);
+        }
+        return stateGraph;
+    }
+    function stateGraphToVisNetworkData(stateGraph) {
+        var nodes = [];
+        var edges = [];
+        for (let stateId in stateGraph) {
+            let netNode = {
+                id: stateId,
+                label: stateId,
+                font: {
+                    size: 18,
+                },
+                color: {
+                    highlight: { background: 'yellow' },
+                    background: stateId == TuringMachine_3.TuringMachine.stop_state ? '#faa' : 'lightsteelblue'
+                },
+                fixed: stateId == TuringMachine_3.TuringMachine.stop_state
+            };
+            nodes.push(netNode);
+            let self_count = 10;
+            for (let edge of stateGraph[stateId]) {
+                if (edge.command.new_state == stateId)
+                    self_count += 10;
+                let text = `'${edge.condition.value}'/'${edge.command.input}',${edge.command.move_dir}`;
+                let netEdge = {
+                    id: stateId + text,
+                    from: stateId,
+                    to: edge.command.new_state,
+                    label: text,
+                    title: text,
+                    arrows: "to",
+                    selfReferenceSize: self_count
+                };
+                edges.push(netEdge);
+            }
+        }
+        return {
+            nodes: new vis_1.default.DataSet(nodes),
+            edges: new vis_1.default.DataSet(edges)
+        };
+    }
+    function getVisNetworkOptions() {
+        var options = {
+            nodes: {
+                color: {
+                    border: 'steelblue',
+                },
+                font: {
+                    face: 'consolas'
+                }
+            },
+            physics: {
+                enabled: true,
+                repulsion: {
+                    centralGravity: 0,
+                    springConstant: 0.2,
+                    damping: 0.3,
+                },
+                solver: 'repulsion',
+            },
+            edges: {
+                color: {
+                    color: 'steelblue',
+                    highlight: 'lightsteelblue',
+                },
+                font: {
+                    face: 'consolas'
+                },
+                length: 200,
+                smooth: {
+                    enabled: true,
+                    type: 'dynamic',
+                },
+            },
+            layout: {
+                randomSeed: 0,
+                hierarchical: { enabled: false, }
+            }
+        };
+        return options;
+    }
+    var vis_1, TuringMachine_3, VisStateGraph;
+    return {
+        setters: [
+            function (vis_1_1) {
+                vis_1 = vis_1_1;
+            },
+            function (TuringMachine_3_1) {
+                TuringMachine_3 = TuringMachine_3_1;
+            }
+        ],
+        execute: function () {
+            ;
+            VisStateGraph = class VisStateGraph {
+                constructor(container, options = { interactive: true }) {
+                    this.container = container;
+                    this.options = options;
+                }
+                update(transitions) {
+                    let states = transitionsToStateGraph(transitions);
+                    let data = stateGraphToVisNetworkData(states);
+                    // create a network
+                    let options = getVisNetworkOptions();
+                    if (!this.options.interactive) {
+                        options = Object.assign({}, getVisNetworkOptions(), {
+                            interaction: {
+                                dragNodes: false,
+                                dragView: true,
+                                selectable: false
+                            }
+                        });
+                    }
+                    this.network = new vis_1.default.Network(this.container, data, options);
+                }
+                setActiveState(state) {
+                    this.network.selectNodes([state], false);
+                }
+            };
+            exports_6("VisStateGraph", VisStateGraph);
+        }
+    };
+});
+System.register("TransitionsTable", ["Transition", "jquery"], function (exports_7, context_7) {
+    var __moduleName = context_7 && context_7.id;
+    // utils
+    function uniq(a) {
+        var seen = {};
+        return a.filter(function (item) {
+            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+        });
+    }
+    var Transition_3, jquery_1, TransitionsConstructorTable, TransitionsTable;
+    return {
+        setters: [
+            function (Transition_3_1) {
+                Transition_3 = Transition_3_1;
+            },
+            function (jquery_1_1) {
+                jquery_1 = jquery_1_1;
+            }
+        ],
+        execute: function () {
+            TransitionsConstructorTable = class TransitionsConstructorTable {
+                constructor(table, inputHandler) {
+                    this.table = table;
+                    this.inputHandler = inputHandler;
+                    jquery_1.default(table)
+                        .append(jquery_1.default('<tr>')
+                        .append(jquery_1.default('<td>'))
+                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text'))))
+                        .append(jquery_1.default('<tr>')
+                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text')))
+                        .append(jquery_1.default('<td>').append(jquery_1.default('<input>').addClass('init-cell').attr('type', 'text'))));
+                    for (let cell of jquery_1.default('.init-cell')) {
+                        cell.addEventListener('input', this.inputHandler);
+                    }
+                }
+                appendRow() {
+                    const rowsLen = this.table.rows.length;
+                    const colsLen = this.table.rows[0].cells.length;
+                    var row = this.table.insertRow(rowsLen);
+                    for (var i = 0; i < colsLen; i++) {
+                        var cell = row.insertCell(0);
+                        let input = document.createElement('input');
+                        input.setAttribute('type', 'text');
+                        input.value = i === (colsLen - 1) ? 'qZ' : ',N,!';
+                        input.addEventListener('input', this.inputHandler);
+                        cell.appendChild(input);
+                    }
+                }
+                appendColumn() {
+                    const rowsLen = this.table.rows.length;
+                    const colsLen = this.table.rows[0].cells.length;
+                    for (var i = 0; i < rowsLen; i++) {
+                        var row = this.table.rows[i];
+                        var cell = row.insertCell(colsLen);
+                        let input = document.createElement('input');
+                        input.setAttribute('type', 'text');
+                        input.value = i === 0 ? 'z' : ',N,!';
+                        input.addEventListener('input', this.inputHandler);
+                        cell.appendChild(input);
+                    }
+                }
+                removeLastRow() {
+                    if (this.table.rows.length > 2) {
+                        for (let cell of [].slice.call(this.table.rows[this.table.rows.length - 1].cells)) {
+                            cell.removeEventListener('input', this.inputHandler);
+                        }
+                        this.table.deleteRow(this.table.rows.length - 1);
+                    }
+                }
+                removeLastColumn() {
+                    var colsLen = this.table.rows[0].cells.length;
+                    if (colsLen > 2) {
+                        for (var i = 0; i < this.table.rows.length; i++) {
+                            var row = this.table.rows[i];
+                            let cell = row.cells[colsLen - 1];
+                            cell.removeEventListener('input', this.inputHandler);
+                            row.deleteCell(colsLen - 1);
+                        }
+                    }
+                }
+                getProgramFromTable() {
+                    const re = /_/g;
+                    let programText = '';
+                    const colsLen = this.table.rows[0].cells.length;
+                    for (let i = 1; i < this.table.rows.length; i++) {
+                        const state = this.table.rows[i].cells[0].children[0].value;
+                        for (let j = 1; j < colsLen; j++) {
+                            const inputSym = this.table.rows[0].cells[j].children[0].value;
+                            const value = this.table.rows[i].cells[j].children[0].value;
+                            if (value) {
+                                const command = `${state},${inputSym}->${value.trim()}`;
+                                programText += `${command.replace(re, ' ')}\n`;
+                            }
+                        }
+                    }
+                    return programText;
+                }
+                createTable(width, height) {
+                    while (this.table.rows.length > 2) {
+                        this.removeLastRow();
+                    }
+                    while (this.table.rows[0].cells.length > 2) {
+                        this.removeLastColumn();
+                    }
+                    this.setTableCellValue(0, 1, '');
+                    this.setTableCellValue(1, 0, '');
+                    this.setTableCellValue(1, 1, '');
+                    while (this.table.rows.length < height + 1)
+                        this.appendRow();
+                    while (this.table.rows[0].cells.length < width + 1)
+                        this.appendColumn();
+                }
+                setTableCellValue(i, j, value) {
+                    this.table.rows[i].cells[j].children[0].value = value;
+                }
+                update(transitions) {
+                    let symbols = uniq(transitions.map(x => x.condition.value)).sort();
+                    let states = uniq(transitions.map(x => x.condition.state)).sort();
+                    this.createTable(symbols.length, states.length);
+                    for (let i = 0; i < states.length + 1; i++) {
+                        for (let j = 0; j < symbols.length + 1; j++) {
+                            if (i === 0 && j === 0)
+                                continue;
+                            let state = '';
+                            let value = '';
+                            if (i > 0)
+                                state = states[i - 1];
+                            if (j > 0)
+                                value = symbols[j - 1];
+                            if (i === 0 && j > 0) {
+                                if (value === ' ')
+                                    value = '_';
+                                this.setTableCellValue(i, j, value);
+                            }
+                            if (j === 0 && i > 0) {
+                                this.setTableCellValue(i, j, state);
+                            }
+                            if (i > 0 && j > 0) {
+                                let transition = getTransition(state, value);
+                                if (transition) {
+                                    let input = (transition.command.input === ' ') ? "_" : transition.command.input;
+                                    let move = (transition.command.move_dir) ? transition.command.move_dir.toString() : '';
+                                    let transitionCommand = `${input},${move},${transition.command.new_state}`;
+                                    this.setTableCellValue(i, j, transitionCommand);
+                                }
+                            }
+                        }
+                    }
+                    function getTransition(_state, _value) {
+                        for (let trans of transitions) {
+                            if (trans.condition.state === _state &&
+                                trans.condition.value === _value) {
+                                return trans;
+                            }
+                        }
+                        return undefined;
+                    }
+                }
+            };
+            exports_7("TransitionsConstructorTable", TransitionsConstructorTable);
+            TransitionsTable = class TransitionsTable {
+                constructor(table) {
+                    this.table = table;
+                }
+                update(transitions) {
+                    let transitions_table_id = this.table.getAttribute('id');
+                    jquery_1.default(this.table).empty();
+                    for (let [i, t] of transitions.entries()) {
+                        let row = jquery_1.default('<tr>').attr('id', transitions_table_id + '_' + i)
+                            .append(jquery_1.default('<td>').append(i.toString()))
+                            .append(jquery_1.default('<td>').html(`(${t.condition.state})`))
+                            .append(jquery_1.default('<td>').html(`'${t.condition.value}'`))
+                            .append(jquery_1.default('<td>').html('—>'))
+                            .append(jquery_1.default('<td>').html(`'${t.command.input}'`))
+                            .append(jquery_1.default('<td>').html(this.moveDirectionToString(t.command.move_dir)))
+                            .append(jquery_1.default('<td>').html(`(${t.command.new_state})`));
+                        jquery_1.default(this.table).append(jquery_1.default(row));
+                    }
+                }
+                moveDirectionToString(move_dir) {
+                    switch (move_dir) {
+                        case Transition_3.MoveDirection.Left: return '<- L';
+                        case Transition_3.MoveDirection.Right: return 'R ->';
+                        default: return 'N';
+                    }
+                }
+                setNextTransition(index) {
+                    for (let row of [].slice.call(this.table.rows)) {
+                        jquery_1.default(row).removeClass('active');
+                    }
+                    if (index >= 0) {
+                        jquery_1.default(this.table.rows[index]).addClass('active');
+                        jquery_1.default(this.table).removeClass('commands-error');
+                    }
+                    else {
+                        jquery_1.default(this.table).addClass('commands-error');
+                    }
+                }
+            };
+            exports_7("TransitionsTable", TransitionsTable);
         }
     };
 });
