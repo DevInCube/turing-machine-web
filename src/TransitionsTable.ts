@@ -11,7 +11,7 @@ export class TransitionsConstructorTable {
                 .append($('<td>').append($('<input>').addClass('init-cell').attr('type', 'text')))
                 .append($('<td>').append($('<input>').addClass('init-cell').attr('type', 'text'))));
         for (let cell of $('.init-cell')) {
-            cell.addEventListener('input', this.inputHandler);
+            cell.addEventListener('change', this.inputHandler);
         }
     }
 
@@ -24,7 +24,7 @@ export class TransitionsConstructorTable {
             let input = document.createElement('input');
             input.setAttribute('type', 'text');
             input.value = i === (colsLen - 1) ? 'qZ' : ',N,!';
-            input.addEventListener('input', this.inputHandler);
+            input.addEventListener('change', this.inputHandler);
             cell.appendChild(input);
         }
     }
@@ -38,7 +38,7 @@ export class TransitionsConstructorTable {
             let input = document.createElement('input');
             input.setAttribute('type', 'text');
             input.value = i === 0 ? 'z' : ',N,!';
-            input.addEventListener('input', this.inputHandler);
+            input.addEventListener('change', this.inputHandler);
             cell.appendChild(input);
         }
     }
@@ -46,7 +46,7 @@ export class TransitionsConstructorTable {
     removeLastRow() {
         if (this.table.rows.length > 2) {
             for (let cell of [].slice.call(this.table.rows[this.table.rows.length - 1].cells)) {
-                cell.removeEventListener('input', this.inputHandler);
+                cell.removeEventListener('change', this.inputHandler);
             }
             this.table.deleteRow(this.table.rows.length - 1);
         }
@@ -58,7 +58,7 @@ export class TransitionsConstructorTable {
             for (var i = 0; i < this.table.rows.length; i++) {
                 var row = this.table.rows[i];
                 let cell = row.cells[colsLen - 1];
-                cell.removeEventListener('input', this.inputHandler);
+                cell.removeEventListener('change', this.inputHandler);
                 row.deleteCell(colsLen - 1);
             }
         }
