@@ -11,7 +11,7 @@ npm install
 Start Build & Watch with:
 
 ```cmd
-npm cbuild
+npm run cbuild
 ```
 
 Run app server with:
